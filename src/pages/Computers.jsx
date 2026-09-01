@@ -4,7 +4,6 @@ import {
   Search,
   Plus,
   X,
-  Filter,
   CheckCircle2,
   AlertTriangle,
   RotateCcw,
@@ -17,9 +16,11 @@ import ConfirmDialog from '../components/common/ConfirmDialog';
 import ComputerModal from '../components/computers/ComputerModal';
 import ComputerTable from '../components/computers/ComputerTable';
 import { useComputers } from '../context/ComputerContext';
+import { useToast } from '../context/ToastContext';
 
 export default function Computers() {
   const { computers, addComputer, editComputer, deleteComputer, stats } = useComputers();
+  const { showToast } = useToast();
 
   // Search and Filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,16 +34,6 @@ export default function Computers() {
   // Delete Confirmation State
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-
-  // Feedback Toast state (optional subtle notification)
-  const [toastMessage, setToastMessage] = useState(null);
-
-  const showToast = (message) => {
-    setToastMessage(message);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
-  };
 
   // Filter computers by search query and status
   const filteredComputers = computers.filter((pc) => {
@@ -77,10 +68,10 @@ export default function Computers() {
   const handleSaveComputer = (computerData) => {
     if (modalMode === 'add') {
       addComputer(computerData);
-      showToast(`Workstation ${computerData.computerId} registered successfully.`);
+      showToast(`Workstation ${computerData.computerId} registered successfully.`, 'success');
     } else if (modalMode === 'edit' && selectedComputer) {
       editComputer(selectedComputer.id, computerData);
-      showToast(`Workstation ${computerData.computerId} updated successfully.`);
+      showToast(`Workstation ${computerData.computerId} updated successfully.`, 'info');
     }
   };
 
@@ -92,7 +83,7 @@ export default function Computers() {
   const handleConfirmDelete = () => {
     if (deleteTarget) {
       deleteComputer(deleteTarget.id);
-      showToast(`Workstation ${deleteTarget.computerId} removed from inventory.`);
+      showToast(`Workstation ${deleteTarget.computerId} removed from inventory.`, 'warning');
       setIsConfirmOpen(false);
       setDeleteTarget(null);
     }
@@ -105,14 +96,6 @@ export default function Computers() {
 
   return (
     <div className="space-y-6">
-      {/* Toast Notification Banner */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-slate-900 border border-cyan-500/40 px-4 py-3 rounded-xl shadow-2xl text-xs text-cyan-300 animate-in slide-in-from-bottom-5 duration-200">
-          <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -193,13 +176,14 @@ export default function Computers() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by Computer ID, Lab, Processor, OS..."
-              className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-9.5 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
+              className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-9.5 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-0.5"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-0.5 cursor-pointer"
                 title="Clear search"
+                aria-label="Clear search query"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

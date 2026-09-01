@@ -17,9 +17,11 @@ import ConfirmDialog from '../components/common/ConfirmDialog';
 import StudentModal from '../components/students/StudentModal';
 import StudentTable from '../components/students/StudentTable';
 import { useStudents } from '../context/StudentContext';
+import { useToast } from '../context/ToastContext';
 
 export default function Students() {
   const { students, addStudent, editStudent, deleteStudent, stats } = useStudents();
+  const { showToast } = useToast();
 
   // Search & Department Filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,16 +35,6 @@ export default function Students() {
   // Delete Confirmation State
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-
-  // Toast message
-  const [toastMessage, setToastMessage] = useState(null);
-
-  const showToast = (message) => {
-    setToastMessage(message);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
-  };
 
   // Filter students
   const filteredStudents = students.filter((stu) => {
@@ -76,10 +68,10 @@ export default function Students() {
   const handleSaveStudent = (studentData) => {
     if (modalMode === 'add') {
       addStudent(studentData);
-      showToast(`Student ${studentData.name} (${studentData.studentId}) registered successfully.`);
+      showToast(`Student ${studentData.name} (${studentData.studentId}) registered successfully.`, 'success');
     } else if (modalMode === 'edit' && selectedStudent) {
       editStudent(selectedStudent.id, studentData);
-      showToast(`Student record for ${studentData.name} updated successfully.`);
+      showToast(`Student record for ${studentData.name} updated successfully.`, 'info');
     }
   };
 
@@ -91,7 +83,7 @@ export default function Students() {
   const handleConfirmDelete = () => {
     if (deleteTarget) {
       deleteStudent(deleteTarget.id);
-      showToast(`Student ${deleteTarget.name} removed from the roster.`);
+      showToast(`Student ${deleteTarget.name} removed from the roster.`, 'warning');
       setIsConfirmOpen(false);
       setDeleteTarget(null);
     }
@@ -104,14 +96,6 @@ export default function Students() {
 
   return (
     <div className="space-y-6">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-slate-900 border border-cyan-500/40 px-4 py-3 rounded-xl shadow-2xl text-xs text-cyan-300 animate-in slide-in-from-bottom-5 duration-200">
-          <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -192,13 +176,14 @@ export default function Students() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by Student ID, Name, Department, Email..."
-              className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-9.5 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
+              className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-9.5 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-0.5 cursor-pointer"
                 title="Clear search"
+                aria-label="Clear search query"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

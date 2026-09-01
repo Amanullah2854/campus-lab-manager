@@ -19,9 +19,11 @@ import ConfirmDialog from '../components/common/ConfirmDialog';
 import SessionModal from '../components/sessions/SessionModal';
 import SessionTable from '../components/sessions/SessionTable';
 import { useSessions } from '../context/SessionContext';
+import { useToast } from '../context/ToastContext';
 
 export default function LabSessions() {
   const { sessions, addSession, editSession, deleteSession, stats } = useSessions();
+  const { showToast } = useToast();
 
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,16 +38,6 @@ export default function LabSessions() {
   // Delete Confirmation State
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-
-  // Toast message
-  const [toastMessage, setToastMessage] = useState(null);
-
-  const showToast = (message) => {
-    setToastMessage(message);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
-  };
 
   // Filter sessions
   const filteredSessions = sessions.filter((session) => {
@@ -80,10 +72,10 @@ export default function LabSessions() {
   const handleSaveSession = (sessionData) => {
     if (modalMode === 'add') {
       addSession(sessionData);
-      showToast(`Lab Session "${sessionData.subject}" scheduled successfully.`);
+      showToast(`Lab Session "${sessionData.subject}" scheduled successfully.`, 'success');
     } else if (modalMode === 'edit' && selectedSession) {
       editSession(selectedSession.id, sessionData);
-      showToast(`Lab Session "${sessionData.subject}" updated successfully.`);
+      showToast(`Lab Session "${sessionData.subject}" updated successfully.`, 'info');
     }
   };
 
@@ -95,7 +87,7 @@ export default function LabSessions() {
   const handleConfirmDelete = () => {
     if (deleteTarget) {
       deleteSession(deleteTarget.id);
-      showToast(`Session "${deleteTarget.subject}" removed from timetable.`);
+      showToast(`Session "${deleteTarget.subject}" removed from timetable.`, 'warning');
       setIsConfirmOpen(false);
       setDeleteTarget(null);
     }
@@ -109,14 +101,6 @@ export default function LabSessions() {
 
   return (
     <div className="space-y-6">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-slate-900 border border-cyan-500/40 px-4 py-3 rounded-xl shadow-2xl text-xs text-cyan-300 animate-in slide-in-from-bottom-5 duration-200">
-          <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -197,13 +181,14 @@ export default function LabSessions() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by Subject, Dept, Instructor, Lab..."
-              className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-9.5 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
+              className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-9.5 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30 transition-colors"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-0.5 cursor-pointer"
                 title="Clear search"
+                aria-label="Clear search query"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
