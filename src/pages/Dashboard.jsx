@@ -21,6 +21,7 @@ import ActivityList from '../components/dashboard/ActivityList';
 import QuickActions from '../components/dashboard/QuickActions';
 import { useComputers } from '../context/ComputerContext';
 import { useSessions } from '../context/SessionContext';
+import { useMaintenance } from '../context/MaintenanceContext';
 import {
   LAB_ROOMS,
 } from '../data/mockData';
@@ -28,11 +29,12 @@ import {
 export default function Dashboard() {
   const { stats } = useComputers();
   const { sessions } = useSessions();
+  const { stats: maintenanceStats } = useMaintenance();
 
   const total = stats.total || 1;
   const availablePct = `${Math.round((stats.available / total) * 100)}%`;
   const inUsePct = `${Math.round((stats.inUse / total) * 100)}%`;
-  const maintenancePct = `${Math.round((stats.maintenance / total) * 100)}%`;
+  const activeIssues = maintenanceStats.reported + maintenanceStats.inProgress;
 
   return (
     <div className="space-y-6">
@@ -49,7 +51,7 @@ export default function Dashboard() {
               Lab Management & Telemetry
             </h1>
             <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl">
-              Live monitoring of {stats.total} departmental workstations across 3 specialized computer labs, active practical sessions, and maintenance queues.
+              Live monitoring of {stats.total} departmental workstations across 3 specialized computer labs, active practical sessions, and {activeIssues} pending maintenance tickets.
             </p>
           </div>
 
@@ -96,11 +98,11 @@ export default function Dashboard() {
         />
         <StatCard
           title="Maintenance"
-          value={stats.maintenance}
-          subtitle="Hardware & driver review"
+          value={activeIssues}
+          subtitle={`${maintenanceStats.highPriority} High Priority`}
           icon={AlertTriangle}
           color="amber"
-          trend={{ value: maintenancePct, positive: false }}
+          trend={{ value: `${maintenanceStats.resolved} Fixed`, positive: true }}
         />
       </div>
 

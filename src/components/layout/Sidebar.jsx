@@ -15,18 +15,20 @@ import { cn } from '../../utils/cn';
 import { useComputers } from '../../context/ComputerContext';
 import { useStudents } from '../../context/StudentContext';
 import { useSessions } from '../../context/SessionContext';
+import { useMaintenance } from '../../context/MaintenanceContext';
 
 export default function Sidebar({ isOpen, onClose }) {
   const { stats: computerStats } = useComputers();
   const { stats: studentStats } = useStudents();
   const { stats: sessionStats } = useSessions();
+  const { stats: maintenanceStats } = useMaintenance();
 
   const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
     { name: 'Computers', path: '/computers', icon: Monitor, badge: `${computerStats.total} Total` },
     { name: 'Students', path: '/students', icon: Users, badge: `${studentStats.total} Enrolled` },
     { name: 'Lab Sessions', path: '/sessions', icon: CalendarClock, badge: `${sessionStats.total} Scheduled` },
-    { name: 'Maintenance', path: '/maintenance', icon: Wrench, badge: `${computerStats.maintenance} Issues` },
+    { name: 'Maintenance', path: '/maintenance', icon: Wrench, badge: `${maintenanceStats.reported + maintenanceStats.inProgress} Issues` },
   ];
 
   return (

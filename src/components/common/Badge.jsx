@@ -19,6 +19,7 @@ const statusMap = {
   offline: { variant: 'danger', label: 'Offline', dot: 'bg-rose-400' },
   active: { variant: 'success', label: 'Active', dot: 'bg-emerald-400' },
   'in progress': { variant: 'primary', label: 'In Progress', dot: 'bg-cyan-400' },
+  reported: { variant: 'warning', label: 'Reported', dot: 'bg-amber-400' },
   scheduled: { variant: 'purple', label: 'Scheduled', dot: 'bg-indigo-400' },
   investigating: { variant: 'warning', label: 'Investigating', dot: 'bg-amber-400' },
   'in queue': { variant: 'info', label: 'In Queue', dot: 'bg-sky-400' },
