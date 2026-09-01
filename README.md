@@ -1,100 +1,104 @@
-# Campus Lab Manager
+# 🧪 Campus Lab Manager
 
-A modern, responsive web application designed for managing and monitoring college computer laboratories, departmental workstation inventories, student enrollments, practical timetables, and hardware maintenance tickets.
+A modern responsive web application for managing a college computer laboratory.
 
----
+## 🌐 Live Demo
+
+[https://campus-lab-manager.onrender.com/](https://campus-lab-manager.onrender.com/)
+
+## 📦 GitHub Repository
+
+[https://github.com/Amanullah2854/campus-lab-manager](https://github.com/Amanullah2854/campus-lab-manager)
 
 ## 📖 Overview
 
-**Campus Lab Manager** provides lab administrators, faculty members, and lab assistants with a unified portal to oversee computer laboratory operations. The system centralizes hardware telemetry, active student allocations, classroom scheduling, and equipment repair tracking with immediate visual feedback, dynamic search/filtering, and local persistence.
-
----
+Campus Lab Manager is a web-based application designed to simplify the management of college computer laboratories. It provides a centralized interface for managing computers, students, laboratory sessions, and maintenance records.
 
 ## ✨ Features
 
-- **📊 Comprehensive Telemetry Dashboard**
-  - High-level metric cards for total workstations, available seats, active practical sessions, and pending maintenance tickets.
-  - Interactive status distribution progress bar displaying fleet allocation percentages.
-  - Chronological live activity feed recording system events, terminal assignments, and repair updates.
-  - Laboratory room capacity indicators and quick action navigation tiles.
+### 📊 Dashboard
+- Overview of laboratory statistics
+- Total computers
+- Available computers
+- Computers in use
+- Computers under maintenance
+- Recent activity
 
-- **🖥️ Workstation & Computer Management (Full CRUD)**
-  - Manage terminal hardware profiles: Computer ID, Assigned Lab, Processor, RAM, Storage, Operating System, and Status (`Available`, `In Use`, `Maintenance`).
-  - Search across IDs, specs, and labs; filter by operational status.
-  - Add and Edit workstation modal with comprehensive field validation.
-  - Safe deletion workflow requiring explicit confirmation via confirmation modal.
+### 🖥️ Computer Management
+- View computers
+- Add computers
+- Edit computers
+- Delete computers
+- Search computers
+- Filter by status
+- Track computer availability
 
-- **👨‍🎓 Student Lab Directory (Full CRUD)**
-  - Track student enrollments with Student ID, Full Name, Department (`CSE`, `AI & DS`, `IT`, `Cyber Security`), Academic Year, Institutional Email, and Contact Phone.
-  - Search by name, roll number, or email; filter by department.
-  - Add and Edit student records with email format verification and required field validation.
-  - Safe deletion with prompt dialog.
+### 👨‍🎓 Student Management
+- View students
+- Add students
+- Edit students
+- Delete students
+- Search students
+- Student information management
 
-- **📅 Lab Session & Practical Timetable (Full CRUD)**
-  - Schedule course practicals with Subject, Department, Target Batch, Lab Room, Faculty Instructor, Date, and Time blocks.
-  - Enforces chronological time constraint validation (`endTime > startTime`).
-  - Filter timetables by academic department and laboratory room.
-  - Edit or cancel practical slots with confirmation safeguards.
+### 📅 Lab Session Management
+- Schedule lab sessions
+- Edit sessions
+- Delete sessions
+- Search and filter sessions
+- Manage lab, subject, instructor, date, and time
 
-- **🔧 Maintenance & Hardware Issue Tracking (Full CRUD)**
-  - Report defects and diagnostics: Workstation ID (synchronized with inventory), Lab Room, Issue Summary, Detailed Symptoms, Reporter, Date, Priority (`Low`, `Medium`, `High`), and Ticket Status (`Reported`, `In Progress`, `Resolved`).
-  - **Automatic Resolution Date**: Auto-records the timestamp when marked as `Resolved` and clears it when re-opened.
-  - In-row status switcher for rapid triage.
-  - Multi-criteria filtering by ticket status and priority level.
+### 🔧 Maintenance Management
+- Report computer issues
+- Track maintenance records
+- Edit maintenance records
+- Delete maintenance records
+- Search maintenance records
+- Filter by status and priority
+- Mark issues as resolved
 
-- **🔔 Unified Toast Notification System**
-  - Context-driven floating notification banners providing clear feedback across all create, update, and delete actions.
+### 📱 Responsive Design
+- Desktop support
+- Tablet support
+- Mobile-friendly interface
 
-- **📱 Fully Responsive Design**
-  - Optimized for desktop, laptop, tablet, and mobile viewports with horizontal table scroll wrappers, responsive forms, and collapsible sidebar drawer.
-
----
+### ✅ Validation & UX
+- Form validation
+- Delete confirmation dialogs
+- Empty states
+- User feedback
+- Consistent UI
 
 ## 🛠️ Technology Stack
 
-- **Frontend Framework:** [React 18](https://react.dev/)
-- **Build Tool & Dev Server:** [Vite](https://vitejs.dev/)
-- **Routing:** [React Router DOM v6](https://reactrouter.com/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **Icons:** [Lucide React](https://lucide.dev/)
-- **Utilities:** `clsx` and `tailwind-merge`
-- **State Management & Persistence:** React Context API + Browser `LocalStorage`
+- **React** (v18.3.1) - Component-based UI library
+- **Vite** (v6.0.1) - Build tool and development server
+- **JavaScript** (ES6+) - Core application logic
+- **CSS / Tailwind CSS** (v3.4.17) - Utility-first styling framework
+- **React Router** (v6.28.0) - Client-side declarative routing
+- **Lucide React** (v0.468.0) - UI iconography
 
----
-
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```
 campus-lab-manager/
 ├── public/
 ├── src/
 │   ├── components/
-│   │   ├── common/             # Reusable UI primitives (Button, Card, Badge, StatCard, ConfirmDialog)
-│   │   ├── computers/          # Computer table and Add/Edit modal components
-│   │   ├── dashboard/          # ActivityList, StatusOverview, and QuickActions widgets
-│   │   ├── layout/             # MainLayout, Sidebar navigation drawer, Header
-│   │   ├── maintenance/        # Maintenance table and ticket reporting modal
-│   │   ├── sessions/           # Practical session timetable and scheduling modal
-│   │   └── students/           # Student directory table and enrollment modal
-│   ├── context/
-│   │   ├── ComputerContext.jsx # Computer inventory state and LocalStorage sync
-│   │   ├── MaintenanceContext.jsx # Maintenance tickets state and resolution logic
-│   │   ├── SessionContext.jsx  # Practical sessions timetable state
-│   │   ├── StudentContext.jsx  # Student directory state
-│   │   └── ToastContext.jsx    # Application-wide toast notifications
-│   ├── data/
-│   │   └── mockData.js         # Comprehensive initial seed records for all modules
-│   ├── pages/
-│   │   ├── Computers.jsx       # Computer Management page
-│   │   ├── Dashboard.jsx       # Main Dashboard Overview page
-│   │   ├── LabSessions.jsx     # Lab Session Timetable page
-│   │   ├── Maintenance.jsx     # Maintenance Issue Management page
-│   │   └── Students.jsx        # Student Management page
-│   ├── utils/
-│   │   └── cn.js               # Class merge helper utility
-│   ├── App.jsx                 # Provider wrappers and route hierarchy
-│   ├── index.css               # Tailwind directives and custom scrollbar styles
-│   └── main.jsx                # Application root mount point
+│   │   ├── common/         # Reusable UI primitives (Button, Card, Badge, StatCard, ConfirmDialog)
+│   │   ├── computers/      # Workstation table and Add/Edit modal components
+│   │   ├── dashboard/      # StatusOverview, ActivityList, and QuickActions widgets
+│   │   ├── layout/         # MainLayout, Sidebar navigation drawer, and Header
+│   │   ├── maintenance/    # Maintenance table and issue reporting modal
+│   │   ├── sessions/       # Timetable grid and session booking modal
+│   │   └── students/       # Student table and enrollment modal
+│   ├── context/            # React Context state providers (Computers, Students, Sessions, Maintenance, Toast)
+│   ├── data/               # Seed datasets and mock records (mockData.js)
+│   ├── pages/              # Route view pages (Dashboard, Computers, Students, LabSessions, Maintenance)
+│   ├── utils/              # Utility helpers (cn.js class merger)
+│   ├── App.jsx             # Root provider tree and route configuration
+│   ├── index.css           # Tailwind CSS directives and global styles
+│   └── main.jsx            # Application entry point
 ├── .gitignore
 ├── index.html
 ├── package.json
@@ -103,75 +107,89 @@ campus-lab-manager/
 └── vite.config.js
 ```
 
----
-
 ## 🚀 Getting Started
 
-Follow these steps to run the application locally:
+### Prerequisites
 
-### 1. Clone the repository
+- Node.js (v18 or later recommended)
+- npm
+
+### Installation
+
+Clone the repository:
+
 ```bash
-git clone https://github.com/your-username/campus-lab-manager.git
+git clone https://github.com/Amanullah2854/campus-lab-manager.git
+```
+
+Enter the project directory:
+
+```bash
 cd campus-lab-manager
 ```
 
-### 2. Install dependencies
+Install dependencies:
+
 ```bash
 npm install
 ```
 
-### 3. Run the development server
+Start the development server:
+
 ```bash
 npm run dev
 ```
 
-The application will start immediately. Open your browser and navigate to:
-```
-http://localhost:5173/
-```
+Open the local URL provided by Vite (typically `http://localhost:5173/`).
 
----
+## 🏗️ Production Build
 
-## 📦 Production Build
-
-To build the application for production deployment:
+To create a production build:
 
 ```bash
 npm run build
 ```
 
-To preview the production build locally:
+## 🌐 Deployment
 
-```bash
-npm run preview
-```
+The application is deployed using Render.
 
----
+Live application:
 
-## 🧩 Application Modules
+[https://campus-lab-manager.onrender.com/](https://campus-lab-manager.onrender.com/)
 
-| Module | Description | Key Capabilities |
-| :--- | :--- | :--- |
-| **Dashboard** | Central operations hub | Fleet overview, status breakdown progress bar, recent events, quick actions. |
-| **Computers** | Hardware inventory | Workstation specs, lab assignments, terminal status tracking, Add/Edit/Delete. |
-| **Students** | Student directory | Roll numbers, department allocations, institutional emails, contact details. |
-| **Lab Sessions** | Timetable scheduling | Course practicals, date/time blocks, faculty supervisors, room allocation. |
-| **Maintenance** | Hardware repair queue | Ticket triage, defect diagnostics, priority management, automatic resolution dates. |
+## 📅 Development Timeline
 
----
+### Day 1
+Project foundation and application structure.
+
+### Day 2
+Dashboard and navigation.
+
+### Day 3
+Computer Management CRUD.
+
+### Day 4
+Student and Lab Session Management.
+
+### Day 5
+Maintenance Management.
+
+### Day 6
+UI polish, validation, responsiveness, and bug fixes.
+
+### Day 7
+Final testing, cleanup, and documentation.
 
 ## 🔮 Future Improvements
 
-The following features represent potential enhancements for future production iterations:
+Possible future improvements:
 
-- **Backend & Database Integration:** Connecting RESTful / GraphQL APIs with PostgreSQL or MongoDB for persistent server-side storage.
-- **Authentication & Role-Based Access Control (RBAC):** Secure login portals for Students, Faculty Instructors, and Lab Administrators.
-- **Live IoT & Telemetry Sensors:** Automated workstation pinging and live seat occupancy detection via network probes.
-- **Automated Alerts & Notifications:** Automated email and SMS alerts for upcoming lab sessions and resolved maintenance tickets.
-- **Analytics & Utilization Reports:** Exportable PDF and CSV reports on laboratory room utilization and hardware reliability metrics.
-
----
-
-## 👤 Author
-
-**Muhammed Mishal**
+- Backend and database integration
+- User authentication
+- Role-based access control
+- Real-time computer availability
+- Advanced reports and analytics
+- Email notifications
+- Lab usage statistics
+- Admin management
