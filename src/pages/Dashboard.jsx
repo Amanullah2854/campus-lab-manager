@@ -20,13 +20,14 @@ import StatusOverview from '../components/dashboard/StatusOverview';
 import ActivityList from '../components/dashboard/ActivityList';
 import QuickActions from '../components/dashboard/QuickActions';
 import { useComputers } from '../context/ComputerContext';
+import { useSessions } from '../context/SessionContext';
 import {
   LAB_ROOMS,
-  MOCK_SESSIONS,
 } from '../data/mockData';
 
 export default function Dashboard() {
   const { stats } = useComputers();
+  const { sessions } = useSessions();
 
   const total = stats.total || 1;
   const availablePct = `${Math.round((stats.available / total) * 100)}%`;
@@ -67,7 +68,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* 1. Statistics Cards (Dynamically computed from computer state) */}
+      {/* 1. Statistics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Computers"
@@ -120,42 +121,42 @@ export default function Dashboard() {
         <div className="space-y-6">
           {/* Active Lab Sessions */}
           <Card
-            title="Active Lab Sessions"
-            subtitle="Happening right now"
+            title="Scheduled Lab Practicals"
+            subtitle="Upcoming & live course sessions"
             icon={Clock}
             action={
               <Link to="/sessions" className="text-xs text-cyan-400 hover:text-cyan-300 font-medium inline-flex items-center gap-1">
-                All <ArrowUpRight className="w-3.5 h-3.5" />
+                All Sessions <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             }
           >
             <div className="space-y-3">
-              {MOCK_SESSIONS.map((session) => (
+              {sessions.slice(0, 3).map((session) => (
                 <div
                   key={session.id}
                   className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-mono font-bold text-cyan-400 px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20">
-                      {session.courseCode}
+                      {session.department}
                     </span>
-                    <Badge status={session.status} size="sm" dot>
-                      {session.status}
+                    <Badge variant="purple" size="sm">
+                      {session.year}
                     </Badge>
                   </div>
-                  <h5 className="text-xs font-semibold text-slate-200 line-clamp-1">{session.title}</h5>
+                  <h5 className="text-xs font-semibold text-slate-200 line-clamp-1">{session.subject}</h5>
                   <div className="text-[11px] text-slate-400 space-y-1">
                     <div className="flex justify-between">
-                      <span>{session.lab}</span>
-                      <span className="text-slate-300 font-medium">{session.batch}</span>
+                      <span className="text-slate-300">{session.lab}</span>
+                      <span className="text-slate-400 font-mono">{session.date}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Instructor:</span>
                       <span className="text-slate-300">{session.instructor}</span>
                     </div>
                     <div className="flex justify-between font-mono text-[10px] text-cyan-300 pt-1">
-                      <span>Attendance:</span>
-                      <span>{session.presentCount} / {session.enrolledCount} Active</span>
+                      <span>Time Slot:</span>
+                      <span>{session.startTime} - {session.endTime}</span>
                     </div>
                   </div>
                 </div>

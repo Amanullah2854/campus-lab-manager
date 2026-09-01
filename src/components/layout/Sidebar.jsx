@@ -13,16 +13,20 @@ import {
 } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { useComputers } from '../../context/ComputerContext';
+import { useStudents } from '../../context/StudentContext';
+import { useSessions } from '../../context/SessionContext';
 
 export default function Sidebar({ isOpen, onClose }) {
-  const { stats } = useComputers();
+  const { stats: computerStats } = useComputers();
+  const { stats: studentStats } = useStudents();
+  const { stats: sessionStats } = useSessions();
 
   const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { name: 'Computers', path: '/computers', icon: Monitor, badge: `${stats.total} Total` },
-    { name: 'Students', path: '/students', icon: Users, badge: `${stats.inUse} Active` },
-    { name: 'Lab Sessions', path: '/sessions', icon: CalendarClock, badge: '1 Live' },
-    { name: 'Maintenance', path: '/maintenance', icon: Wrench, badge: `${stats.maintenance} Issues` },
+    { name: 'Computers', path: '/computers', icon: Monitor, badge: `${computerStats.total} Total` },
+    { name: 'Students', path: '/students', icon: Users, badge: `${studentStats.total} Enrolled` },
+    { name: 'Lab Sessions', path: '/sessions', icon: CalendarClock, badge: `${sessionStats.total} Scheduled` },
+    { name: 'Maintenance', path: '/maintenance', icon: Wrench, badge: `${computerStats.maintenance} Issues` },
   ];
 
   return (
@@ -60,7 +64,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 lg:hidden transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 lg:hidden transition-colors cursor-pointer"
             aria-label="Close sidebar"
           >
             <X className="w-5 h-5" />
@@ -138,7 +142,7 @@ export default function Sidebar({ isOpen, onClose }) {
             </div>
             <div className="flex justify-between text-[11px] text-slate-400">
               <span>Active Workstations</span>
-              <span className="font-mono text-cyan-300 font-medium">{stats.inUse} / {stats.total}</span>
+              <span className="font-mono text-cyan-300 font-medium">{computerStats.inUse} / {computerStats.total}</span>
             </div>
           </div>
         </div>
