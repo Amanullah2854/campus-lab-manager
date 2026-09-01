@@ -23,11 +23,14 @@ export default function MainLayout() {
 
         {/* Footer */}
         <footer className="px-6 py-4 border-t border-slate-900 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-7xl w-full mx-auto">
-          <p>© 2026 Campus Lab Manager • Round 2 Project • Day 2 Dashboard & Navigation</p>
+          <p>© 2026 Campus Lab Manager • College Computer Laboratory Management System</p>
           <div className="flex items-center gap-4 text-slate-400">
-            <span>Status: Operational (99.8% Uptime)</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Status: Operational
+            </span>
             <span>•</span>
-            <span>Vite + React 18</span>
+            <span>React + Vite</span>
           </div>
         </footer>
       </div>
